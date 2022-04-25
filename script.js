@@ -1,12 +1,12 @@
-const MyApp = {
-    scale: function(){
-    console.log(`I popped up here!`)
-},
-    doubleScale: function(){
-    console.log(`Double up!`)
-    }
-};
+const TicTacToe = () => {
+    const GAMEBOARD = (() => {
+        let gameBoard = []
+        return gameBoard
+    })();
 
-function makeBread(){
-    return `Heat it up`
+    const PLAYER = (name, shape) => {
+        let score = 0;
+        let getName = () => name;
+        let getShape = () => shape;
+    }
 }
