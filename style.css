@@ -37,6 +37,9 @@ body, html {
 .field {
     background-color: var(--light-color1);
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .field:hover {
