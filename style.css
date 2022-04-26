@@ -21,22 +21,23 @@ body, html {
     height: 100vh;
 }
 
-.game {
-    height: 100vh;
-    display: grid;
-    grid-template: 1fr 6fr 1fr / 1fr;
-}
-
-.header {
-    text-align: center;
-}
-.gamecontainer {
+.score {
     display: flex;
-    justify-content: center;
-}
-.gamegrid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(min(50px, 100px), 200px));
-    grid-template-rows: repeat(3, minmax(min(50px, 100px), 200px));
+    justify-content: space-evenly;
 }
 
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    justify-content: center;
+    gap: 10px;
+}
+
+.field {
+    background-color: var(--light-color1);
+}
+
+.field:hover {
+    background-color: var(--light-color2);
+}
