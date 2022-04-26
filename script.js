@@ -1,4 +1,5 @@
 const gameboard = (() => {
+    'use strict'
     let array = [];
     const fields = [...document.querySelectorAll('.field')];
     fields.forEach(field => field.addEventListener('click',
@@ -10,10 +11,11 @@ const gameboard = (() => {
 })();
 
 const drawShape = (() => {
-    let fieldText = gameboard.fields.textContent;
+    'use strict'
     const shapes = ['x', 'o'];
+    const random = () => Math.floor(Math.random()*shapes.length)
     gameboard.fields.forEach(field => field.addEventListener('click', () => {
-        if(field.textContent === '') field.textContent = shapes[0];
+        if(field.textContent === '') field.textContent = shapes[random()];
         if(field.textContent === shapes[0] || field.textContent === shapes[1]) return
     }))
 })();
