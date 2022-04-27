@@ -12,10 +12,23 @@ const gameboard = (() => {
 
 const drawShape = (() => {
     'use strict'
-    const shapes = ['x', 'o'];
-    const random = () => Math.floor(Math.random()*shapes.length)
+    const marker = ['x', 'o'];
+    const array = [];
+    const random = () => Math.floor(Math.random()*marker.length)
     gameboard.fields.forEach(field => field.addEventListener('click', () => {
-        if(field.textContent === '') field.textContent = shapes[random()];
-        if(field.textContent === shapes[0] || field.textContent === shapes[1]) return
-    }))
+        let choice = () => marker[random()];
+        if(field.textContent === '') field.textContent = choice()
+        if(field.textContent === marker[0] || field.textContent === marker[1]) return
+    }));
+    return {
+        array: array
+    }
+})();
+
+const gameProcess = (() => {
+    'use strict';
+    return {
+            field: gameboard.array,
+            marker: drawShape.array
+        }
 })();
