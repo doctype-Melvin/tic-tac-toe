@@ -20,13 +20,10 @@ const Player = (string) => {
 
 const player1 = Player('x').getMarker();
 const player2 = Player('o').getMarker();
+const Markers = ['x', 'o'];
 
-function placeMarker(player){
-    gameBoard.grid.forEach(field=>field.addEventListener('click', (e) => {
-        e.target.textContent = player;
-        if(player === 'x') placeMarker(player2);
-        if(player === 'o') placeMarker(player1);
-    }))
-}
-
-placeMarker(player1)
+gameBoard.grid.forEach(field=>field.addEventListener('click', (e) => {
+        if(e.target.textContent !== '') return
+        if(e.target.textContent === '') e.target.textContent = player1;
+        gameBoard.array.push(player1)
+}))
