@@ -60,7 +60,7 @@ const playMod = (()=> {
     else return
     evalWin()
     return game
-}))
+        }))
 })()
 
 //Evaluates game outcome
@@ -75,10 +75,11 @@ function evalWin(){
             winner.push('o')
             console.log('O Wins!')
         }
-        if(gameBoard.arrayX.length > 4 && winner.length === 0) {
+        if(gameBoard.array.length >= 9 && winner.length === 0) {
             console.log(`TIE`)
         }
     }
-    console.log(winner)
+    if(winner.length > 0){
+        gameBoard.grid.forEach(field => field.removeEventListener('click'))
+    }
 }
-
