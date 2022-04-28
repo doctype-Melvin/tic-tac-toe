@@ -25,13 +25,16 @@ const tracking = gameBoard.array
 
 gameBoard.grid.forEach(field => field.addEventListener('click', () => {
     if(field.textContent === '' && tracking[tracking.length-1] === undefined) {
-        tracking.push(Markers[0])
+        tracking.push(Markers[0]);
+        field.textContent = Markers[0]
     }
     else if(field.textContent === '' && tracking[tracking.length-1] === Markers[0]){
-        tracking.push(Markers[1])
+        tracking.push(Markers[1]);
+        field.textContent = Markers[1]
     }
     else if(field.textContent === '' && tracking[tracking.length-1] === Markers[1]){
-        tracking.push(Markers[0])
-    }
+        tracking.push(Markers[0]);
+        field.textContent = Markers[0]
+    } else return
     console.log(tracking)
 }))
