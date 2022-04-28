@@ -21,9 +21,17 @@ const Player = (string) => {
 const player1 = Player('x').getMarker();
 const player2 = Player('o').getMarker();
 const Markers = ['x', 'o'];
+const tracking = gameBoard.array
 
-gameBoard.grid.forEach(field=>field.addEventListener('click', (e) => {
-        if(e.target.textContent !== '') return
-        if(e.target.textContent === '') e.target.textContent = player1;
-        gameBoard.array.push(player1)
+gameBoard.grid.forEach(field => field.addEventListener('click', () => {
+    if(field.textContent === '' && tracking[tracking.length-1] === undefined) {
+        tracking.push(Markers[0])
+    }
+    else if(field.textContent === '' && tracking[tracking.length-1] === Markers[0]){
+        tracking.push(Markers[1])
+    }
+    else if(field.textContent === '' && tracking[tracking.length-1] === Markers[1]){
+        tracking.push(Markers[0])
+    }
+    console.log(tracking)
 }))
