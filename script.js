@@ -1,3 +1,4 @@
+//Module creates necessary game objects to store scores and marks on gameboard
 const gameBoard = (() => {
     const grid = [...document.querySelectorAll('.field')];
     const arrayX = [];
@@ -11,27 +12,7 @@ const gameBoard = (() => {
         }
 })();
 
-const win = (() => {
-    const firstRow = [1, 2, 3];
-    const secondRow = [4, 5, 6];
-    const thirdRow = [7, 8, 9];
-    const firstCol = [1, 4, 7];
-    const secondCol = [2, 5, 8];
-    const thirdCol = [3, 6, 9];
-    const crossLeft = [1, 5, 9];
-    const crossRight = [3, 5, 7];
-        return {
-            firstRow,
-            secondRow,
-            thirdRow,
-            firstCol,
-            secondCol,
-            thirdCol,
-            crossLeft,
-            crossRight
-        }
-})()
-
+//Array of winning array constellations
 const winArr = [
     [1, 2, 3],
     [4, 5, 6],
@@ -43,19 +24,24 @@ const winArr = [
     [3, 5, 7]
 ]
 
+//Factory function to create players
 const Player = (string) => {
     const getMarker = () => string;
     return {
         getMarker
     }
 }
-
+//Dummy players
 const player1 = Player('x').getMarker();
 const player2 = Player('o').getMarker();
+
+//
 const Markers = ['x', 'o'];
 const tracking = gameBoard.array
 
-gameBoard.grid.forEach(field => field.addEventListener('click', () => {
+//Makes grid interactive and holds logic to placing marks on gameboard -- 'Play Module'
+const playMod = (()=> {
+   let game = gameBoard.grid.forEach(field => field.addEventListener('click', () => {
     if(field.textContent === '' && tracking[tracking.length-1] === undefined) {
         tracking.push(Markers[0]);
         field.textContent = Markers[0];
@@ -72,22 +58,27 @@ gameBoard.grid.forEach(field => field.addEventListener('click', () => {
                 gameBoard.arrayX.push(parseInt(field.dataset.field))
             } 
     else return
-    console.log(tracking);
-    //console.log(gameBoard.arrayX, gameBoard.arrayO)
     evalWin()
+    return game
 }))
+})()
 
-//Create winning arrays and check if game arrays include winning arrays
+//Evaluates game outcome
 function evalWin(){
+    let winner = [];
     for (let i = 0; i < winArr.length; i++){
         if(winArr[i].every(val => gameBoard.arrayX.includes(val))){
-            console.log('XXX Winner')
+            winner.push('x')
+            console.log('X Wins!')
         }
         if(winArr[i].every(val => gameBoard.arrayO.includes(val))){
-            console.log(`OOO Winner`)
-        }if(gameBoard.arrayX.length > 4 || gameBoard.arrayO.length > 4){
-            console.log(`Tie`)
+            winner.push('o')
+            console.log('O Wins!')
+        }
+        if(gameBoard.arrayX.length > 4 && winner.length === 0) {
+            console.log(`TIE`)
         }
     }
+    console.log(winner)
 }
 
