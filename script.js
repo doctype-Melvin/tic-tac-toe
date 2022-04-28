@@ -39,33 +39,38 @@ const player2 = Player('o').getMarker();
 const Markers = ['x', 'o'];
 const tracking = gameBoard.array
 
-//Makes grid interactive and holds logic to placing marks on gameboard -- 'Play Module'
-const playMod = (()=> {
-   let game = gameBoard.grid.forEach(field => field.addEventListener('click', () => {
-    if(field.textContent === '' && tracking[tracking.length-1] === undefined) {
+//Module contains marker placing logic -- Alternating Xs and Os
+const markerMod = (() => {
+   const placeMark = (e) => {
+    if(e.target.textContent === '' && tracking[tracking.length-1] === undefined) {
         tracking.push(Markers[0]);
-        field.textContent = Markers[0];
-        gameBoard.arrayX.push(parseInt(field.dataset.field))
+        e.target.textContent = Markers[0];
+        gameBoard.arrayX.push(parseInt(e.target.dataset.field))
     }
-        else if(field.textContent === '' && tracking[tracking.length-1] === Markers[0]){
+        else if(e.target.textContent === '' && tracking[tracking.length-1] === Markers[0]){
             tracking.push(Markers[1]);
-            field.textContent = Markers[1];
-            gameBoard.arrayO.push(parseInt(field.dataset.field))
+            e.target.textContent = Markers[1];
+            gameBoard.arrayO.push(parseInt(e.target.dataset.field))
         }
-            else if(field.textContent === '' && tracking[tracking.length-1] === Markers[1]){
+            else if(e.target.textContent === '' && tracking[tracking.length-1] === Markers[1]){
                 tracking.push(Markers[0]);
-                field.textContent = Markers[0];
-                gameBoard.arrayX.push(parseInt(field.dataset.field))
-            } 
-    else return
-    evalWin()
-    return game
-        }))
-})()
+                e.target.textContent = Markers[0];
+                gameBoard.arrayX.push(parseInt(e.target.dataset.field))
+            }
+            else return
+    evalWin()}
+    return { placeMark } //Return fn to public
+})();
+
+//Makes grid interactive -- Play Module
+const playMod = (()=> {
+    let game = gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
+ return game
+ })();
 
 //Evaluates game outcome
+let winner = [];
 function evalWin(){
-    let winner = [];
     for (let i = 0; i < winArr.length; i++){
         if(winArr[i].every(val => gameBoard.arrayX.includes(val))){
             winner.push('x')
@@ -78,8 +83,14 @@ function evalWin(){
         if(gameBoard.array.length >= 9 && winner.length === 0) {
             console.log(`TIE`)
         }
-    }
-    if(winner.length > 0){
-        gameBoard.grid.forEach(field => field.removeEventListener('click'))
+    }if(gameBoard.array.length >= 9 || winner.length !== 0){
+        gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeMark))
+
     }
 }
+
+//DOM Manipulation:
+//create buttons
+//Create Scoreboard
+//
+//Try to create AI CPU opponent
