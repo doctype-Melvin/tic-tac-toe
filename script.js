@@ -36,7 +36,7 @@ const player1 = Player('x').getMarker();
 const player2 = Player('o').getMarker();
 
 //
-const Markers = ['x', 'o'];
+const Markers = ['X', 'O'];
 const tracking = gameBoard.array
 
 //Module contains marker placing logic -- Alternating Xs and Os
@@ -65,7 +65,16 @@ const markerMod = (() => {
 //Makes grid interactive -- Play Module
 const playMod = (()=> {
     let game = gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
- return game
+
+const display = document.querySelector('.display');
+    let restartBtn = document.createElement('button');
+    restartBtn.textContent = 'Restart';
+    restartBtn.classList.add('btn')
+    display.append(restartBtn)
+    return {
+     game,
+
+    }
  })();
 
 //Evaluates game outcome
@@ -90,7 +99,7 @@ function evalWin(){
 }
 
 //DOM Manipulation:
-//create buttons
-//Create Scoreboard
+//hook up restart button and hide during game
+//Create messages
 //
 //Try to create AI CPU opponent
