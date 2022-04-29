@@ -12,3 +12,5 @@ Furthermore I tried to implement more Module patterns than I did before - which 
 After I accomplished the PvP logic and added a 'Game Over' PopUp, I decided to create a Human vs Computer mode.
 At the time of writing this the in-game AI lacks the 'I' part massively. It's just a random number that doesn't 
 take into account any Minmax concepts. 
+
+<a href="https://doctype-melvin.github.io/tic-tac-toe/">LIVE<a/>
