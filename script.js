@@ -12,7 +12,7 @@ const gameBoard = (() => {
         }
 })();
 
-//Array of winning constellations
+//Array of winning constellations + winner array
 const winArr = [
     [1, 2, 3],
     [4, 5, 6],
@@ -22,7 +22,9 @@ const winArr = [
     [3, 6, 9],
     [1, 5, 9],
     [3, 5, 7]
-]
+];
+//Tracks the game winner
+let winner = [];
 
 //Factory function to create players -- NOT IN USE
 const Player = (string) => {
@@ -37,7 +39,7 @@ const player2 = Player('o').getMarker();
 
 //
 const Markers = ['X', 'O'];
-const tracking = gameBoard.array
+let tracking = gameBoard.array
 
 //Module contains marker placing logic -- Alternating Xs and Os
 const markerMod = (() => {
@@ -64,7 +66,7 @@ const markerMod = (() => {
 
 //Play Module -- Makes grid interactive -- Clears grid -- Adds restart button
 const playMod = (()=> {
-    let game = gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
+    let game = () => gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
 
     //Clear the fields text contents
     const clearBoard = () => {
@@ -72,6 +74,9 @@ const playMod = (()=> {
         gameBoard.array = [];
         gameBoard.arrayX = [];
         gameBoard.arrayO = [];
+        winner = [];
+        tracking = gameBoard.array;
+        game();
     }
 
     //Adds Restart button
@@ -82,33 +87,67 @@ const display = document.querySelector('.display');
     display.append(restartBtn)
     let clear = () => restartBtn.addEventListener('click', clearBoard)
     return {
-     game,
+     game: game(),
      clear: clear()
     }
  })();
 
 //Evaluates game outcome
-let winner = [];
 function evalWin(){
     for (let i = 0; i < winArr.length; i++){
         if(winArr[i].every(val => gameBoard.arrayX.includes(val))){
-            winner.push('x')
-            console.log('X Wins!')
+            winner.push('x');
+            console.log('X Wins!');
+            gameWinner.winner('Player');
         }
         if(winArr[i].every(val => gameBoard.arrayO.includes(val))){
-            winner.push('o')
-            console.log('O Wins!')
+            winner.push('o');
+            console.log('O Wins!');
+            gameWinner.winner('Roboto');
         }
         if(gameBoard.array.length >= 9 && winner.length === 0) {
-            console.log(`TIE`)
+            console.log(`TIE`);
+            gameWinner.tie();
         }
-    }if(gameBoard.array.length >= 9 || winner.length !== 0){
-        gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeMark))
+    }
+    if(gameBoard.array.length >= 9 || winner.length !== 0) {
+    gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeMark))
 
     }
 }
 
+const gameWinner = (() => {
+    const modal = document.querySelector('.modal');
+    const closeBtn = document.querySelector('.close');
+    const text = document.querySelector('.modal-text');
+        const winner = (winner) => {
+            text.textContent = `${winner} has won this match!`;
+            modal.style.display = 'block';
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            })
+            window.addEventListener('click', (e) => {
+                if(e.target == modal) 
+                modal.style.display = 'none';
+            })
+        };
+        const tie = () => {
+            text.textContent = `It's a tied game!`;
+            modal.style.display = 'block';
+            closeBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            })
+            window.addEventListener('click', (e) => {
+                if(e.target == modal) 
+                modal.style.display = 'none';
+            })
+        }
+    return {
+        winner,
+        tie
+    }
+})();
 //DOM Manipulation:
-//Create messages
+//Create messages popup
 //
 //Try to create AI CPU opponent
