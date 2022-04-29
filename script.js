@@ -12,7 +12,7 @@ const gameBoard = (() => {
         }
 })();
 
-//Array of winning array constellations
+//Array of winning constellations
 const winArr = [
     [1, 2, 3],
     [4, 5, 6],
@@ -24,14 +24,14 @@ const winArr = [
     [3, 5, 7]
 ]
 
-//Factory function to create players
+//Factory function to create players -- NOT IN USE
 const Player = (string) => {
     const getMarker = () => string;
     return {
         getMarker
     }
 }
-//Dummy players
+//Dummy players -- NOT IN USE
 const player1 = Player('x').getMarker();
 const player2 = Player('o').getMarker();
 
@@ -62,18 +62,28 @@ const markerMod = (() => {
     return { placeMark } //Return fn to public
 })();
 
-//Makes grid interactive -- Play Module
+//Play Module -- Makes grid interactive -- Clears grid -- Adds restart button
 const playMod = (()=> {
     let game = gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
 
+    //Clear the fields text contents
+    const clearBoard = () => {
+        gameBoard.grid.forEach(field=>field.textContent = '');
+        gameBoard.array = [];
+        gameBoard.arrayX = [];
+        gameBoard.arrayO = [];
+    }
+
+    //Adds Restart button
 const display = document.querySelector('.display');
     let restartBtn = document.createElement('button');
     restartBtn.textContent = 'Restart';
     restartBtn.classList.add('btn')
     display.append(restartBtn)
+    let clear = () => restartBtn.addEventListener('click', clearBoard)
     return {
      game,
-
+     clear: clear()
     }
  })();
 
@@ -99,7 +109,6 @@ function evalWin(){
 }
 
 //DOM Manipulation:
-//hook up restart button and hide during game
 //Create messages
 //
 //Try to create AI CPU opponent
