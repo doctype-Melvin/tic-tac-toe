@@ -76,7 +76,7 @@ const markerMod = (() => {
             gameBoard.arrayX.push(parseInt(e.target.dataset.field));
         }
         else return;
-    evalWin()
+        evalWin()
     aiMarker()
 };
     const aiMarker = () => {
@@ -84,13 +84,15 @@ const markerMod = (() => {
         if(gameBoard.grid[field].textContent === '' && winner.length === 0){
         gameBoard.grid[field].textContent = Markers[1];
         tracking.push(Markers[1]);
-        gameBoard.arrayO.push(field)
+        gameBoard.arrayO.push(parseInt(gameBoard.grid[field].dataset.field))
         }
         else if(gameBoard.grid[field].textContent !== '' && gameBoard.array.length >= 9) return
             else if(gameBoard.grid[field].textContent !== ''){
                 aiMarker()
             }
+        evalWin()
     }
+    
     return {
         placeMark,
         placeX,
@@ -100,6 +102,9 @@ const markerMod = (() => {
 
 //Play Module -- Makes grid interactive -- Clears grid -- Adds restart button
 const playMod = (()=> {
+    let player1 = document.querySelector('.player');
+    let player2 = document.querySelector('.roboto')
+
     let game = () => gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
     
     //Clear the fields text contents
@@ -116,27 +121,36 @@ const playMod = (()=> {
     //Adds different game modes
 const display = document.querySelector('.display');
     let vsHuman = document.createElement('button');
-    vsHuman.textContent = 'vs Human';
+    vsHuman.textContent = 'Human vs Human';
     vsHuman.classList.add('btn');
     display.append(vsHuman);
     let vsPlayer = () => {
         gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeX));
         gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark));
+        player1.textContent = `X = Player 1`;
+        player2.textContent = `O = Player 2`;
         clear()
     }
     vsHuman.addEventListener('click', vsPlayer);
         
         let vsRoboto = document.createElement('button');
-        vsRoboto.textContent = `vs Roboto`;
+        vsRoboto.textContent = `Human vs Roboto`;
         vsRoboto.classList.add('btn');
         display.append(vsRoboto);
         let vsCpu = () => {
             gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeMark));
             gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeX));
+            player1.textContent = `X = Human`;
+            player2.textContent = `O = Roboto`;
             clear()
         };
         vsRoboto.addEventListener('click', vsCpu);
+        
         game()
+        return{
+            player1,
+            player2
+        }
  })();
 
 //Evaluates game outcome
@@ -144,13 +158,13 @@ function evalWin(){
     for (let i = 0; i < winArr.length; i++){
         if(winArr[i].every(val => gameBoard.arrayX.includes(val))){
             winner.push('x');
-            console.log('X Wins!');
-            gameWinner.winner('Player');
+            if(playMod.player1.textContent === 'X = Player 1') gameWinner.winner('Player 1');
+            else if(playMod.player1.textContent !== 'X = Player 1') gameWinner.winner('Human');
         }
         if(winArr[i].every(val => gameBoard.arrayO.includes(val))){
             winner.push('o');
-            console.log('O Wins!');
-            gameWinner.winner('Roboto');
+            if(playMod.player2.textContent === 'O = Player 2') gameWinner.winner('Player 2');
+            else if(playMod.player2.textContent !== 'O = Player 2') gameWinner.winner('Roboto');
         }
        else if(winner[0] === undefined && gameBoard.array.length >= 9) {
             console.log(`TIE`);
@@ -158,7 +172,8 @@ function evalWin(){
         }
     }
     if(gameBoard.array.length >= 9 || winner.length !== 0) {
-    gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeMark))
+    gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeMark));
+    gameBoard.grid.forEach(field=>field.removeEventListener('click', markerMod.placeX));
     }
 }
 
@@ -181,7 +196,7 @@ const gameWinner = (() => {
         };
         //Declares tie
         const tie = () => {
-            text.textContent = `It's a tied game!`;
+            text.textContent = `Game is tied! Play again?`;
             modal.style.display = 'block';
             closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
@@ -198,4 +213,4 @@ const gameWinner = (() => {
 })();
 //DOM Manipulation:
 //Try to create AI CPU opponent
-//Add button that removes eventlistener for human vs human mode
+//BUG:: HvR mode declares R winner after 4 moves

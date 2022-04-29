@@ -42,7 +42,7 @@ body, html {
     border-radius: 10px;
 }
 
-.markers{
+.player, .roboto{
     font-size: 1.5rem;
     font-weight: 600;
 }
