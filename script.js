@@ -63,22 +63,22 @@ const markerMod = (() => {
             else return
     evalWin()
 };
-//Man vs Roboto
+    //Man vs Roboto
     const placeX = (e) => {
     if(e.target.textContent === '' && tracking[tracking.length-1] === undefined) {
         e.target.textContent = Markers[0];
         tracking.push(Markers[0]);
         gameBoard.arrayX.push(parseInt(e.target.dataset.field));
     }
-    else if(e.target.textContent === '' && tracking[tracking.length-1] === Markers[1]){
-        e.target.textContent = Markers[0];
-        tracking.push(Markers[0]);
-        gameBoard.arrayX.push(parseInt(e.target.dataset.field));
-    }
-    else return;
+        else if(e.target.textContent === '' && tracking[tracking.length-1] === Markers[1]){
+            e.target.textContent = Markers[0];
+            tracking.push(Markers[0]);
+            gameBoard.arrayX.push(parseInt(e.target.dataset.field));
+        }
+        else return;
     evalWin()
     aiMarker()
-}
+};
     const aiMarker = () => {
         let field = Math.floor(Math.random()*9);
         if(gameBoard.grid[field].textContent === '' && winner.length === 0){
@@ -86,9 +86,10 @@ const markerMod = (() => {
         tracking.push(Markers[1]);
         gameBoard.arrayO.push(field)
         }
-        else if(gameBoard.grid[field].textContent !== ''){
-            aiMarker()
-        }
+        else if(gameBoard.grid[field].textContent !== '' && gameBoard.array.length >= 9) return
+            else if(gameBoard.grid[field].textContent !== ''){
+                aiMarker()
+            }
     }
     return {
         placeMark,
@@ -102,7 +103,7 @@ const playMod = (()=> {
     let game = () => gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark))
     
     //Clear the fields text contents
-    const clearBoard = () => {
+    const clear = () => {
         gameBoard.grid.forEach(field=>field.textContent = '');
         gameBoard.array = [];
         gameBoard.arrayX = [];
@@ -110,32 +111,32 @@ const playMod = (()=> {
         winner = [];
         tracking = gameBoard.array;
         console.clear()
-        game();
     }
 
-    //Adds Restart button
+    //Adds different game modes
 const display = document.querySelector('.display');
-    let restartBtn = document.createElement('button');
-    restartBtn.textContent = 'Restart';
-    restartBtn.classList.add('btn');
-    display.append(restartBtn);
-    let clear = () => restartBtn.addEventListener('click', clearBoard);
+    let vsHuman = document.createElement('button');
+    vsHuman.textContent = 'vs Human';
+    vsHuman.classList.add('btn');
+    display.append(vsHuman);
+    let vsPlayer = () => {
+        gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeX));
+        gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark));
+        clear()
+    }
+    vsHuman.addEventListener('click', vsPlayer);
         
-        let gameMode = document.createElement('button');
-        gameMode.textContent = `VS Roboto`;
-        gameMode.classList.add('btn');
-        display.append(gameMode);
-        let vsRoboto = () => {
+        let vsRoboto = document.createElement('button');
+        vsRoboto.textContent = `vs Roboto`;
+        vsRoboto.classList.add('btn');
+        display.append(vsRoboto);
+        let vsCpu = () => {
             gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeMark));
             gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeX));
+            clear()
         };
-        gameMode.addEventListener('click', vsRoboto);
+        vsRoboto.addEventListener('click', vsCpu);
         game()
-    return {
-     game,
-     clear: clear(),
-     vsRoboto
-    }
  })();
 
 //Evaluates game outcome
@@ -151,7 +152,7 @@ function evalWin(){
             console.log('O Wins!');
             gameWinner.winner('Roboto');
         }
-        if(gameBoard.array.length >= 9 && winner.length === 0) {
+       else if(winner[0] === undefined && gameBoard.array.length >= 9) {
             console.log(`TIE`);
             gameWinner.tie();
         }
