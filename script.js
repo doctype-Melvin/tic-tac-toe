@@ -76,9 +76,10 @@ const markerMod = (() => {
             gameBoard.arrayX.push(parseInt(e.target.dataset.field));
         }
         else return;
-        evalWin()
+    evalWin()
     aiMarker()
 };
+    //AI marker logic (simple)
     const aiMarker = () => {
         let field = Math.floor(Math.random()*9);
         if(gameBoard.grid[field].textContent === '' && winner.length === 0){
@@ -120,10 +121,13 @@ const playMod = (()=> {
 
     //Adds different game modes
 const display = document.querySelector('.display');
+const gameMode = document.createElement('div');
+display.append(gameMode)
+gameMode.classList.add('gameMode');
     let vsHuman = document.createElement('button');
     vsHuman.textContent = 'Human vs Human';
     vsHuman.classList.add('btn');
-    display.append(vsHuman);
+    gameMode.append(vsHuman);
     let vsPlayer = () => {
         gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeX));
         gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark));
@@ -136,7 +140,7 @@ const display = document.querySelector('.display');
         let vsRoboto = document.createElement('button');
         vsRoboto.textContent = `Human vs Roboto`;
         vsRoboto.classList.add('btn');
-        display.append(vsRoboto);
+        gameMode.append(vsRoboto);
         let vsCpu = () => {
             gameBoard.grid.forEach(field => field.removeEventListener('click', markerMod.placeMark));
             gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeX));
@@ -211,6 +215,12 @@ const gameWinner = (() => {
         tie
     }
 })();
+
+const setNames = (() => {
+    const player1 = playMod.player1;
+    const player2 = playMod.player2;
+    player1.addEventListener('click', () => (console.log('Murcof')))
+    player2.addEventListener('click', () => (console.log('Pissof')))
+})()
 //DOM Manipulation:
 //Try to create AI CPU opponent
-//BUG:: HvR mode declares R winner after 4 moves
