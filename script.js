@@ -217,10 +217,21 @@ const gameWinner = (() => {
 })();
 
 const setNames = (() => {
+    const nameParent = document.querySelector('.messages')
     const player1 = playMod.player1;
     const player2 = playMod.player2;
-    player1.addEventListener('click', () => (console.log('Murcof')))
-    player2.addEventListener('click', () => (console.log('Pissof')))
-})()
+    const replaceElem = (e) => {
+        let name = document.createElement('input');
+        name.classList.add('name')
+        nameParent.replaceChild(name, e.target);
+        name.addEventListener('change', () => {
+            e.target.textContent = name.value
+        nameParent.replaceChild(e.target, name)
+        })
+    }
+    player1.addEventListener('click', replaceElem)
+    player2.addEventListener('click', replaceElem)
+
+})();
 //DOM Manipulation:
 //Try to create AI CPU opponent
