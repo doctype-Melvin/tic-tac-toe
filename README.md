@@ -13,4 +13,9 @@ After I accomplished the PvP logic and added a 'Game Over' PopUp, I decided to c
 At the time of writing this the in-game AI lacks the 'I' part massively. It's just a random number that doesn't 
 take into account any Minmax concepts. 
 
+# UPDATE
+05/02/22
+I changed the color palette and added a feature that lets users enter their name. Will try to get
+the AI functionality up and running in a few days - hopefully.
+
 <a href="https://doctype-melvin.github.io/tic-tac-toe/">LIVE<a/>
