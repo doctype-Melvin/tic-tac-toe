@@ -133,6 +133,7 @@ gameMode.classList.add('gameMode');
         gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeMark));
         player1.textContent = `X = Player 1`;
         player2.textContent = `O = Player 2`;
+        changeNames.setName()
         clear()
     }
     vsHuman.addEventListener('click', vsPlayer);
@@ -146,6 +147,7 @@ gameMode.classList.add('gameMode');
             gameBoard.grid.forEach(field => field.addEventListener('click', markerMod.placeX));
             player1.textContent = `X = Human`;
             player2.textContent = `O = Roboto`;
+            changeNames.removeSetName();
             clear()
         };
         vsRoboto.addEventListener('click', vsCpu);
@@ -163,12 +165,16 @@ function evalWin(){
         if(winArr[i].every(val => gameBoard.arrayX.includes(val))){
             winner.push('x');
             if(playMod.player1.textContent === 'X = Player 1') gameWinner.winner('Player 1');
-            else if(playMod.player1.textContent !== 'X = Player 1') gameWinner.winner('Human');
+            else if(playMod.player1.textContent === 'X = Human') gameWinner.winner('Human');
+            else if(playMod.player1.textContent !== 'X = Player 1' &&
+            playMod.player1.textContent !== 'X = Human') gameWinner.winner(playMod.player1.textContent)
         }
         if(winArr[i].every(val => gameBoard.arrayO.includes(val))){
             winner.push('o');
             if(playMod.player2.textContent === 'O = Player 2') gameWinner.winner('Player 2');
-            else if(playMod.player2.textContent !== 'O = Player 2') gameWinner.winner('Roboto');
+            else if(playMod.player2.textContent === 'O = Roboto') gameWinner.winner('Roboto');
+            else if(playMod.player2.textContent !== 'O = Player 2' &&
+            playMod.player2.textContent !== 'O = Roboto') gameWinner.winner(playMod.player2.textContent)
         }
        else if(winner[0] === undefined && gameBoard.array.length >= 9) {
             console.log(`TIE`);
@@ -216,7 +222,7 @@ const gameWinner = (() => {
     }
 })();
 
-const setNames = (() => {
+const changeNames = (() => {
     const nameParent = document.querySelector('.messages')
     const player1 = playMod.player1;
     const player2 = playMod.player2;
@@ -224,14 +230,31 @@ const setNames = (() => {
         let name = document.createElement('input');
         name.classList.add('name')
         nameParent.replaceChild(name, e.target);
+
+        name.addEventListener('focusout', () => {
+            nameParent.replaceChild(e.target, name)
+        })
         name.addEventListener('change', () => {
-            e.target.textContent = name.value
-        nameParent.replaceChild(e.target, name)
+        e.target.textContent = name.value;
+        nameParent.replaceChild(e.target, name);
         })
     }
-    player1.addEventListener('click', replaceElem)
-    player2.addEventListener('click', replaceElem)
+    const setName = () => {
+    player1.addEventListener('click', replaceElem);
+    player2.addEventListener('click', replaceElem);
+};
+
+    const removeSetName = () => {
+        player1.removeEventListener('click', replaceElem);
+        player2.removeEventListener('click', replaceElem);
+    }
+    return {
+        setName,
+        removeSetName
+    }
 
 })();
+changeNames.setName()
 //DOM Manipulation:
+//Changing names results in DOM error
 //Try to create AI CPU opponent
