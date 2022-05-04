@@ -144,3 +144,18 @@ body, html {
     text-decoration: none;
     cursor: pointer;
 }
+
+.footer {
+    margin-top: auto;
+    color: #fff;
+    background-color: var(--light-color2);
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+}
+
+.footer a {
+    text-decoration: none;
+    font-weight: 600;
+    color: white;
+}
