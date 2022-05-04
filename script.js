@@ -26,6 +26,13 @@ const winArr = [
 //Tracks the game winner
 let winner = [];
 
+//Gameboard array
+let board = [
+    [null, null, null],
+    [null, null, null],
+    [null, null, null]
+];
+
 //Factory function to create players -- NOT IN USE
 const Player = (string) => {
     const getMarker = () => string;
@@ -69,15 +76,18 @@ const markerMod = (() => {
         e.target.textContent = Markers[0];
         tracking.push(Markers[0]);
         gameBoard.arrayX.push(parseInt(e.target.dataset.field));
+       
     }
         else if(e.target.textContent === '' && tracking[tracking.length-1] === Markers[1]){
             e.target.textContent = Markers[0];
             tracking.push(Markers[0]);
             gameBoard.arrayX.push(parseInt(e.target.dataset.field));
+            
         }
         else return;
     evalWin()
     aiMarker()
+      
 };
     //AI marker logic (simple)
     const aiMarker = () => {
@@ -148,6 +158,7 @@ gameMode.classList.add('gameMode');
             player1.textContent = `X = Human`;
             player2.textContent = `O = Roboto`;
             changeNames.removeSetName();
+            
             clear()
         };
         vsRoboto.addEventListener('click', vsCpu);
@@ -255,6 +266,3 @@ const changeNames = (() => {
 
 })();
 changeNames.setName()
-//DOM Manipulation:
-//Changing names results in DOM error
-//Try to create AI CPU opponent
